@@ -45,7 +45,8 @@ def extract_event(table_row):
             name = title
             code = title.upper().replace(' ', '')
 
-    name = re.sub(r"^LI ", "", name)
+    name = clean_subject(name)
+
     # build description
     description = ""
     description += 'With: ' + lecturer + '\n'
@@ -68,3 +69,18 @@ def extract_datetime(date, time):
     dt = DEFAULT_TIMEZONE.localize(dt)
     dt = dt.astimezone(pytz.utc)
     return dt
+
+# Remove module codes, LM and/or LH and extended.
+CODE_STRIPPER  = re.compile(
+    r"(?P<code>\([0-9]+/[0-9]+\))|(?P<prefix>LM/LH|LH/LM|LH|LM|LI)|(?P<extended>\(Extended\)?)"
+)
+# Remove duplicates in the case of the name being present twice on some extended modules.
+REMOVE_DOUBLES = re.compile(
+    r".*/(?P<one>^.*)"
+)
+
+def clean_subject(subject: str) -> str:
+    subject = re.sub(CODE_STRIPPER, "", subject)
+    subject = re.sub(REMOVE_DOUBLES, "", subject)
+
+    return subject.strip()
