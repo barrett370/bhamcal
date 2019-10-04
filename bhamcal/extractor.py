@@ -46,7 +46,6 @@ def extract_event(table_row):
             code = title.upper().replace(' ', '')
 
     name = re.sub(r"^LI ", "", name)
-
     # build description
     description = ""
     description += 'With: ' + lecturer + '\n'
