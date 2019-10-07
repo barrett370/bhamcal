@@ -47,7 +47,7 @@ def extract_event(table_row):
             name = title
             code = title.upper().replace(' ', '')
 
-    name = clean_subject(name)
+    name = f"{clean_subject(name)}, {event_type}"
 
     # build description
     description = ""
