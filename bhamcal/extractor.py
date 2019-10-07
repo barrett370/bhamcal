@@ -8,6 +8,7 @@ from .event import CalendarEvent
 
 DEFAULT_TIMEZONE = pytz.timezone('Europe/London')
 
+
 def extract(frame):
     soup = BeautifulSoup(frame, 'html.parser')
     spreadsheets = soup.find_all('table', class_='spreadsheet')
@@ -16,6 +17,7 @@ def extract(frame):
         rows = spreadsheet.find_all('tr')[1:]
         for row in rows:
             yield extract_event(row)
+
 
 def extract_event(table_row):
     entries = table_row.find_all('td')
@@ -64,14 +66,16 @@ def extract_event(table_row):
         description=description
     )
 
+
 def extract_datetime(date, time):
     dt = datetime.strptime(date + " " + time, "%d %b %Y %H:%M")
     dt = DEFAULT_TIMEZONE.localize(dt)
     dt = dt.astimezone(pytz.utc)
     return dt
 
+
 # Remove module codes, LM and/or LH and extended.
-CODE_STRIPPER  = re.compile(
+CODE_STRIPPER = re.compile(
     r"(?P<code>\([0-9]+/[0-9]+\))|(?P<prefix>LM/LH|LH/LM|LH|LM|LI)|(?P<extended>\(Extended\)?)"
 )
 # Remove duplicates in the case of the name being present twice on some extended modules.
@@ -79,8 +83,12 @@ REMOVE_DOUBLES = re.compile(
     r".*/(?P<one>^.*)"
 )
 
+
 def clean_subject(subject: str) -> str:
     subject = re.sub(CODE_STRIPPER, "", subject)
     subject = re.sub(REMOVE_DOUBLES, "", subject)
-
+    if subject.__contains__("/"):
+        split = subject.split("/")
+        if split[1].__contains__(split[0]):
+            subject = split[0] + split[1].replace(split[0], "")
     return subject.strip()
