@@ -26,7 +26,7 @@ def extract_event(table_row):
     # extract data from table
     day = entries[0]
     title = entries[1].strip()
-    event_type = entries[2]
+    event_type: str = entries[2]
     start_time = entries[3]
     end_time = entries[4]
     location = entries[5]
@@ -47,8 +47,10 @@ def extract_event(table_row):
             name = title
             code = title.upper().replace(' ', '')
 
+    if event_type.__contains__("/"):
+        event_type = event_type.split("/")[0]
     name = f"{clean_subject(name)}, {event_type}"
-
+    print(name)
     # build description
     description = ""
     description += 'With: ' + lecturer + '\n'
