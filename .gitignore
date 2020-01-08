@@ -18,3 +18,5 @@ venv/
 # credentials
 credentials.json
 token.pickle
+
+.vscode/

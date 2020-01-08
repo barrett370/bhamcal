@@ -8,6 +8,11 @@ from .event import CalendarEvent
 
 DEFAULT_TIMEZONE = pytz.timezone('Europe/London')
 
+cheats = {
+    "Advanced Aspects of Nature Inspired Search and Optimisation/Extended / Nature Inspired Search and Optimisation/Extended (27818/27819/28209/28211)" :
+        "Aspects of Nature Inspired Search adn Optimisation"
+}
+
 
 def extract(frame):
     soup = BeautifulSoup(frame, 'html.parser')
@@ -49,7 +54,10 @@ def extract_event(table_row):
 
     if event_type.__contains__("/"):
         event_type = event_type.split("/")[0]
-    name = f"{clean_subject(name)}, {event_type}"
+    if name in cheats.keys():
+        name = f"[{event_type}] - {cheats[name]}"
+    else:
+        name = f"[{event_type}] - {clean_subject(name)}"
     print(name)
     # build description
     description = ""
@@ -92,5 +100,5 @@ def clean_subject(subject: str) -> str:
     if len(items) == 2:
         if items[0].lower().strip() == items[1].lower().strip():
             subject = re.sub(REMOVE_DOUBLES, "", subject)
-
+    subject = re.sub(r'\(\)',"",subject)
     return subject.strip()
