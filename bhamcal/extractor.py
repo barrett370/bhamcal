@@ -10,7 +10,7 @@ DEFAULT_TIMEZONE = pytz.timezone('Europe/London')
 
 cheats = {
     "Advanced Aspects of Nature Inspired Search and Optimisation/Extended / Nature Inspired Search and Optimisation/Extended (27818/27819/28209/28211)" :
-        "Aspects of Nature Inspired Search adn Optimisation"
+        "Aspects of Nature Inspired Search and Optimisation"
 }
 
 
