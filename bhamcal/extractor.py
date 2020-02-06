@@ -9,7 +9,7 @@ from .event import CalendarEvent
 DEFAULT_TIMEZONE = pytz.timezone('Europe/London')
 
 cheats = {
-    "Advanced Aspects of Nature Inspired Search and Optimisation/Extended / Nature Inspired Search and Optimisation/Extended (27818/27819/28209/28211)" :
+        "LH Nature Inspired Search and Optimisation/LM Advanced Aspects of Nature-Inspired Search and Optimisation(28209/32235)": 
         "Aspects of Nature Inspired Search and Optimisation"
 }
 
@@ -55,6 +55,7 @@ def extract_event(table_row):
     if event_type.__contains__("/"):
         event_type = event_type.split("/")[0]
     if name in cheats.keys():
+        print(f"Found cheat for {name}")
         name = f"[{event_type}] - {cheats[name]}"
     else:
         name = f"[{event_type}] - {clean_subject(name)}"

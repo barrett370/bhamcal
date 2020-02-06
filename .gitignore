@@ -20,5 +20,6 @@ credentials.json
 token.pickle
 
 .vscode/
+secret/
 # selenium
 geckodriver.log

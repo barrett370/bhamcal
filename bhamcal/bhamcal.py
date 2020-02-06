@@ -27,6 +27,7 @@ from .output.gcal import googleCalendar
 @click.password_option(confirmation_prompt=False,
               help="Override password to my.bham account.")
 def main(username, password, form, downloader, headless, output, colors):
+    print(f"passed in password: {password}")
     try:
         if downloader == 'native':
             fr = frame.NativeFrame()

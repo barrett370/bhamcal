@@ -10,4 +10,4 @@ diff:
 
 .PHONY debug:
 debug:
-	bhamcal sjb786 -o calendar-y3-sjb786.ical --password ${UNI_PASSWORD}
+	bhamcal sjb786 -o calendar-y3-sjb786.ical --password "${UNI_PASSWORD}"
