@@ -5,19 +5,24 @@ that is completely incompatible with any reasonable system. This is a simple
 command line tool to extract the data from my.bham and generate something
 compatible with a reasonable system.
 
-This project is inspired (and takes a bit of code from) [Tom Moses](https://github.com/tomhmoses)'
+This project is loosely inspired by [Tom Moses](https://github.com/tomhmoses)'
 work on [OnlineBhamTimetableConverter][timetable-converter]. It's a great
 project, however, I'm generally unhappy about having to give my password off
 to third-party services, and I just need a simple command line tool.
+
+## Quick start
+
+You can get started easily using the prebuilt docker image:
+
+    $ docker run -ti -v $(pwd):/data jedevc/bhamcal <username> -f /data/out.ical
+
+An iCalendar file will be created in your current directory that you can then
+install into whatever mail app you use.
 
 ## Installation
 
 bhamcal requires at least python 3.7, as it uses some slightly more modern
 features.
-
-Additionally, chromedriver is required for selenium to scrape the calendar
-data. To install it, see [here][selenium-install] (for windows-specific
-instructions, see below).
 
 Finally, to actually install bhamcal, clone the repository, and install it
 using pip:
@@ -29,13 +34,8 @@ using pip:
 If you don't want to install it system-wide, you can run it as a module, after
 installing the dependencies:
 
-    $ pip install -r requirements.txt
+    $ pip3 install -r requirements.txt
     $ python3 -m bhamcal
-
-### Windows
-
-- Download `chromedriver.exe` from [here](https://sites.google.com/a/chromium.org/chromedriver/downloads).
-- Put it inside `C:\Windows`.
 
 ## Usage
 
@@ -96,11 +96,36 @@ To generate a Google Calendar:
 The Calendar ID can be found in the calendar-specific settings in the Google
 Calendar web view.
 
+### Legacy scraping method
+
+In previous versions, bhamcal used to utilize a fully-fledged browser to make
+requests, using selenium. However, this approach (while still included in
+bhamcal) is much slower, so has been replaced by default.
+
+If you want to use it, you'll need to install chromedriver to allow selenium to
+scrape the calendar data. To install it, see [here][selenium-install], or for
+windows instructions, see below.
+
+Additionally, you'll need to install some additional dependencies using pip:
+
+    $ pip3 install -e ".[browser]"
+
+Then to invoke bhamcal using the chrome backend:
+
+    $ python3 -m bhamcal -o calendar.ics --downloader chrome
+
+#### Windows
+
+- Download `chromedriver.exe` from [here](https://sites.google.com/a/chromium.org/chromedriver/downloads).
+- Put it inside `C:\Windows`.
+
 ## Development
 
-To develop, first set up the pipenv:
+To develop, first set up a virtual environment and install the dependencies:
 
-    $ pipenv shell
+    $ virtualenv .venv
+    $ source .venv/bin/activate
+    $ pip install -r requirements.txt
 
 Then, you can run the tool using:
 
@@ -108,6 +133,16 @@ Then, you can run the tool using:
 
 If you add new dependencies, make sure that they are reflected in both
 `requirements.txt` and `setup.py`.
+
+## Docker
+
+To build the Docker image:
+
+    $ docker build -t bhamcal .
+
+To run it:
+
+    $ docker run -ti -v $(pwd):/data bhamcal
 
 ## License
 
